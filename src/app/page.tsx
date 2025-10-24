@@ -178,8 +178,8 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center">
-            <div className="relative w-[16in] max-w-full overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl print:w-[16in] print:border-0 print:shadow-none">
-              <div className="flex h-[10in] w-full flex-col gap-[0.35in] px-[0.6in] pt-[0.5in] pb-[0.8in] print:h-[10in]">
+            <div className="relative w-[16in] max-w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl transition print:w-[16in] print:border-0 print:bg-transparent print:shadow-none">
+              <div className="flex h-[10in] w-full flex-col px-[0.75in] pt-[0.75in] pb-[0.65in] print:h-[10in]">
                 <input
                   type="text"
                   value={state.title}
@@ -187,11 +187,11 @@ export default function Home() {
                     dispatch({ type: "setTitle", title: event.target.value })
                   }
                   maxLength={60}
-                  className="mx-auto w-full max-w-[12in] border-b border-dashed border-neutral-300 bg-transparent pb-3 text-center text-3xl font-semibold uppercase tracking-[0.35em] text-neutral-800 outline-none placeholder:text-neutral-300 print:border-none print:pb-2"
+                  className="mx-auto w-full max-w-[12in] bg-transparent text-center text-4xl font-semibold uppercase tracking-[0.32em] text-neutral-800 outline-none placeholder:text-neutral-300 focus-visible:ring-0"
                   placeholder="Collection Title"
                 />
-                <div className="relative flex-1">
-                  <div className="h-full w-full pr-[1.6in] pb-[1.4in]">
+                <div className="flex flex-1 flex-col pt-[0.5in]">
+                  <div className="h-full w-full">
                     <TemplateCanvas
                       template={activeTemplate}
                       slots={visibleSlots}
@@ -206,14 +206,16 @@ export default function Home() {
                       }
                     />
                   </div>
-                  <Image
-                    src="/gertmanian-logo.svg"
-                    alt="Gertmanian"
-                    width={220}
-                    height={72}
-                    className="pointer-events-none absolute bottom-0 right-0 w-[1.85in] max-w-[280px]"
-                    priority
-                  />
+                  <div className="flex justify-center pt-[0.45in]">
+                    <Image
+                      src="/gertmanian-logo.svg"
+                      alt="Gertmanian"
+                      width={220}
+                      height={72}
+                      className="pointer-events-none w-[2.3in] max-w-[320px]"
+                      priority
+                    />
+                  </div>
                 </div>
               </div>
             </div>
