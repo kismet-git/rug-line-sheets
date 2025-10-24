@@ -74,12 +74,18 @@ export function ImageSlot({
     onClearImage(index);
   };
 
+  const dropZoneClasses = [
+    "relative flex flex-1 cursor-pointer flex-col items-center justify-center transition-colors",
+    imageUrl ? "bg-transparent" : "bg-neutral-50",
+    isDragging
+      ? "border-2 border-dashed border-blue-400"
+      : "border border-dashed border-transparent print:border-0",
+  ].join(" ");
+
   return (
-    <div className="group relative flex h-full w-full flex-col overflow-hidden rounded-lg border border-neutral-300 bg-white shadow-sm print:border-neutral-200">
+    <div className="group relative flex h-full w-full flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition print:rounded-none print:border-0 print:bg-transparent print:shadow-none">
       <div
-        className={`relative flex flex-1 cursor-pointer flex-col items-center justify-center bg-neutral-50 transition-colors ${
-          isDragging ? "border-2 border-dashed border-blue-400" : ""
-        }`}
+        className={dropZoneClasses}
         onClick={() => fileInputRef.current?.click()}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -91,7 +97,7 @@ export function ImageSlot({
             alt={`Rug ${index + 1}`}
             fill
             sizes="100%"
-            className="object-contain"
+            className="object-contain object-center"
             unoptimized
           />
         ) : (
@@ -113,14 +119,14 @@ export function ImageSlot({
           </button>
         ) : null}
       </div>
-      <label className="flex items-center border-t border-neutral-200 bg-white px-3">
+      <label className="flex items-center border-t border-neutral-200 bg-white px-3 print:border-0 print:bg-transparent">
         <span className="sr-only">Caption for rug {index + 1}</span>
         <input
           type="text"
           value={caption}
           onChange={(event) => onCaptionChange(index, event.target.value)}
           placeholder="Caption"
-          className="h-10 w-full bg-transparent text-sm font-medium uppercase tracking-wide text-neutral-800 outline-none placeholder:text-neutral-400"
+          className="h-10 w-full bg-transparent text-center text-sm font-semibold uppercase tracking-[0.3em] text-neutral-800 outline-none placeholder:text-neutral-400 print:h-auto print:text-[0.95rem] print:tracking-[0.25em]"
           maxLength={60}
         />
       </label>
