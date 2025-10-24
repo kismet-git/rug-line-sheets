@@ -108,16 +108,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-neutral-100 text-neutral-900 print:bg-white">
       <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-6 py-10 print:max-w-none print:px-0 print:py-0">
-        <header className="flex flex-col gap-4 items-center text-center print:hidden">
+        <header className="flex flex-col gap-4 print:hidden sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold tracking-wide text-neutral-800 text-center">
+            <h1 className="text-2xl font-semibold tracking-wide text-neutral-800">
               Gertmanian Line Sheet Builder
             </h1>
-            <p className="text-sm text-neutral-500 text-center">
+            <p className="text-sm text-neutral-500">
               Upload rugs, enter captions, pick a layout, then print to PDF.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap gap-3">
             <button
               type="button"
               onClick={() => window.print()}
@@ -130,7 +130,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-xl print:rounded-none print:bg-transparent print:p-0 print:shadow-none">
           <div className="grid gap-4 print:hidden md:grid-cols-[minmax(0,_1fr)_minmax(0,_220px)] md:items-end">
-            <label className="flex flex-col gap-2 items-center text-center">
+            <label className="flex flex-col gap-2">
               <span className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500">
                 Collection Title
               </span>
@@ -141,20 +141,20 @@ export default function Home() {
                   dispatch({ type: "setTitle", title: event.target.value })
                 }
                 maxLength={60}
-                className="rounded-lg border border-neutral-200 px-4 py-2 text-lg font-semibold uppercase tracking-[0.2em] text-neutral-800 outline-none focus:border-neutral-400 text-center"
+                className="rounded-lg border border-neutral-200 px-4 py-2 text-lg font-semibold uppercase tracking-[0.2em] text-neutral-800 outline-none focus:border-neutral-400"
               />
             </label>
-            <div className="flex flex-col gap-2 items-center">
-              <label className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500 text-center">
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500">
                 Template
               </label>
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center justify-center">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <select
                   value={activeTemplate.id}
                   onChange={(event) =>
                     dispatch({ type: "setTemplate", templateId: event.target.value })
                   }
-                  className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm font-medium uppercase tracking-wide text-neutral-700 outline-none focus:border-neutral-400 text-center"
+                  className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm font-medium uppercase tracking-wide text-neutral-700 outline-none focus:border-neutral-400"
                 >
                   {templates.map((template) => (
                     <option key={template.id} value={template.id}>
@@ -168,7 +168,7 @@ export default function Home() {
                     onClick={() =>
                       dispatch({ type: "setTemplate", templateId: suggestedTemplate.id })
                     }
-                    className="whitespace-nowrap rounded-full border border-neutral-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-600 transition hover:border-neutral-40[...]"
+                    className="whitespace-nowrap rounded-full border border-neutral-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-600 transition hover:border-neutral-400 hover:text-neutral-800"
                   >
                     Use {suggestedTemplate.label}
                   </button>
@@ -187,7 +187,7 @@ export default function Home() {
                     dispatch({ type: "setTitle", title: event.target.value })
                   }
                   maxLength={60}
-                  className="mx-auto w-full max-w-[12in] border-b border-dashed border-neutral-300 bg-transparent pb-3 text-center text-3xl font-semibold uppercase tracking-[0.35em] text-neutral-800 outline-none print:text-3xl"
+                  className="mx-auto w-full max-w-[12in] border-b border-dashed border-neutral-300 bg-transparent pb-3 text-center text-3xl font-semibold uppercase tracking-[0.35em] text-neutral-800 outline-none placeholder:text-neutral-300 print:border-none print:pb-2"
                   placeholder="Collection Title"
                 />
                 <div className="relative flex-1">
@@ -219,7 +219,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   );
 }

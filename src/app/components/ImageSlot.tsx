@@ -1,4 +1,4 @@
-use client;
+"use client";
 
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -113,25 +113,24 @@ export function ImageSlot({
           </button>
         ) : null}
       </div>
-
-      <label className="flex flex-col items-center border-t border-neutral-200 bg-white px-3 py-2 text-center">
+      <label className="flex items-center border-t border-neutral-200 bg-white px-3">
         <span className="sr-only">Caption for rug {index + 1}</span>
         <input
           type="text"
           value={caption}
           onChange={(event) => onCaptionChange(index, event.target.value)}
           placeholder="Caption"
-          className="w-full border-none bg-transparent text-center text-sm text-neutral-700 outline-none placeholder:text-neutral-400"
+          className="h-10 w-full bg-transparent text-sm font-medium uppercase tracking-wide text-neutral-800 outline-none placeholder:text-neutral-400"
           maxLength={60}
         />
-        <input
-          ref={fileInputRef}
-          onChange={handleInputChange}
-          className="hidden"
-          type="file"
-          accept="image/*"
-        />
       </label>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleInputChange}
+      />
     </div>
   );
 }
