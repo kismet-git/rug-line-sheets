@@ -164,7 +164,7 @@ export default function Home() {
                 value={state.title}
                 onChange={(event) => handleTitleChange(event.target.value)}
                 maxLength={60}
-                className="rounded-lg border border-neutral-200 px-4 py-2 text-lg font-semibold uppercase tracking-[0.2em] text-neutral-800 outline-none focus:border-neutral-400"
+                className="rounded-lg border border-neutral-200 px-4 py-2 text-lg font-semibold uppercase tracking-[0.2em] text-[#006991] outline-none focus:border-[#006991]"
                 aria-labelledby={collectionTitleLabelId}
               />
             </label>
@@ -209,7 +209,7 @@ export default function Home() {
                   value={state.title}
                   onChange={(event) => handleTitleChange(event.target.value)}
                   maxLength={60}
-                  className="mx-auto w-full max-w-[12in] bg-transparent text-center text-4xl font-semibold uppercase tracking-[0.32em] text-neutral-800 outline-none placeholder:text-neutral-300 focus-visible:ring-0"
+                  className="mx-auto w-full max-w-[12in] bg-transparent text-center text-4xl font-semibold uppercase tracking-[0.32em] text-[#006991] outline-none placeholder:text-[#006991]/40 focus-visible:ring-0"
                   placeholder="Collection Title"
                   aria-labelledby={collectionTitleLabelId}
                 />
@@ -229,7 +229,8 @@ export default function Home() {
                       }
                     />
                   </div>
-                  <div className="flex justify-center pt-[0.45in]">
+                  <div className="flex flex-col items-center gap-[0.2in] pt-[0.45in]">
+                    <div className="h-[2px] w-[6in] max-w-full bg-[#006991]" />
                     <Image
                       src="https://u0m9uz4r42yofjsv.public.blob.vercel-storage.com/gertmenian-logo.png"
                       alt="Gertmenian"
