@@ -202,44 +202,50 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center">
-            <div className="relative w-[16in] max-w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl transition print:w-[16in] print:border-0 print:bg-transparent print:shadow-none">
-              <div className="flex h-[10in] w-full flex-col px-[0.75in] pt-[0.75in] pb-[0.65in] print:h-[10in]">
+            <div className="relative w-[16.6in] max-w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl transition print:w-[16.6in] print:border-0 print:bg-transparent print:shadow-none">
+              <div className="flex h-[10.6in] w-full flex-col px-[0.28in] pt-[0.2in] pb-[0.2in] print:h-[10.6in] print:px-[0.22in] print:pt-[0.18in] print:pb-[0.18in]">
                 <input
                   type="text"
                   value={state.title}
                   onChange={(event) => handleTitleChange(event.target.value)}
                   maxLength={60}
-                  className="mx-auto w-full max-w-[12in] bg-transparent text-center text-4xl font-semibold uppercase tracking-[0.32em] text-[#006991] outline-none placeholder:text-[#006991]/40 focus-visible:ring-0"
+                  className="mx-auto w-full max-w-[13.5in] bg-transparent text-center text-4xl font-semibold uppercase tracking-[0.3em] text-[#006991] outline-none placeholder:text-[#006991]/40 focus-visible:ring-0"
                   placeholder="Collection Title"
                   aria-labelledby={collectionTitleLabelId}
                 />
-                <div className="flex flex-1 flex-col pt-[0.5in]">
-                  <div className="h-full w-full">
-                    <TemplateCanvas
-                      template={activeTemplate}
-                      slots={visibleSlots}
-                      onImageChange={(index, file) =>
-                        dispatch({ type: "setImage", index, payload: file })
-                      }
-                      onClearImage={(index) =>
-                        dispatch({ type: "clearImage", index })
-                      }
-                      onCaptionChange={(index, caption) =>
-                        dispatch({ type: "setCaption", index, caption })
-                      }
-                    />
+                <div className="flex flex-1 flex-col pt-[0.2in]">
+                  <div className="flex-1 min-h-0">
+                    <div className="flex h-full w-full items-stretch justify-center">
+                      <div className="h-full w-full max-w-[13.5in]">
+                        <TemplateCanvas
+                          template={activeTemplate}
+                          slots={visibleSlots}
+                          onImageChange={(index, file) =>
+                            dispatch({ type: "setImage", index, payload: file })
+                          }
+                          onClearImage={(index) =>
+                            dispatch({ type: "clearImage", index })
+                          }
+                          onCaptionChange={(index, caption) =>
+                            dispatch({ type: "setCaption", index, caption })
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-center gap-[0.2in] pt-[0.45in]">
-                    <div className="h-[2px] w-[6in] max-w-full bg-[#006991]" />
+                  <footer className="mt-auto flex w-full flex-col items-center gap-[0.08in] pt-[0.18in]">
+                    <div className="h-[2px] w-full max-w-[13.5in] bg-[#006991]" />
                     <Image
                       src="https://u0m9uz4r42yofjsv.public.blob.vercel-storage.com/gertmenian-logo.png"
                       alt="Gertmenian"
                       width={220}
                       height={72}
-                      className="pointer-events-none w-[2.3in] max-w-[320px]"
+                      className="pointer-events-none w-[2.4in] max-w-[320px]"
                       priority
+                      unoptimized
                     />
-                  </div>
+                    <div className="h-[2px] w-full max-w-[13.5in] bg-[#006991]" />
+                  </footer>
                 </div>
               </div>
             </div>
