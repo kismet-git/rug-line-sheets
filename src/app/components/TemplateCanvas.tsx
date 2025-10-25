@@ -6,6 +6,7 @@ import { slotAreaLookup } from "../templates";
 
 type SlotState = {
   imageUrl?: string;
+  name?: string;
   caption: string;
 };
 
@@ -29,14 +30,16 @@ export function TemplateCanvas({
     .join(" ");
 
   const slotAreas = slotAreaLookup[template.id];
+  const gapSize = template.slotCount >= 6 ? "0.25in" : "0.4in";
 
   return (
     <div
-      className="grid h-full w-full gap-[0.35in]"
+      className="grid h-full w-full"
       style={{
         gridTemplateColumns: template.gridTemplateColumns,
         gridTemplateRows: template.gridTemplateRows,
         gridTemplateAreas,
+        gap: gapSize,
       }}
     >
       {slots.map((slot, index) => (
@@ -47,6 +50,7 @@ export function TemplateCanvas({
           <ImageSlot
             index={index}
             imageUrl={slot.imageUrl}
+            name={slot.name}
             caption={slot.caption}
             onImageChange={onImageChange}
             onClearImage={onClearImage}

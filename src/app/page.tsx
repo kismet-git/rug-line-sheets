@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useReducer } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useId } from "react";
 import { TemplateCanvas } from "./components/TemplateCanvas";
-import { maxSlots, templates, type TemplateDefinition } from "./templates";
+import { maxSlots, templates } from "./templates";
+import type { TemplateDefinition } from "./templates";
 
 type SlotState = {
   imageUrl?: string;
@@ -69,6 +70,8 @@ function findTemplate(templateId: string): TemplateDefinition {
 
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const collectionTitleLabelId = useId();
+  const templateFieldId = useId();
 
   const activeTemplate = useMemo(
     () => findTemplate(state.templateId),
@@ -98,12 +101,30 @@ export default function Home() {
         dispatch({ type: "setTemplate", templateId: suggestedTemplate.id });
       }
     }
-  }, [activeTemplate, filledSlotCount, suggestedTemplate]);
+  }, [activeTemplate, dispatch, filledSlotCount, suggestedTemplate]);
 
   const visibleSlots = useMemo(
     () => state.slots.slice(0, activeTemplate.slotCount),
     [state.slots, activeTemplate.slotCount],
   );
+
+  const handleTitleChange = useCallback(
+    (title: string) => {
+      dispatch({ type: "setTitle", title });
+    },
+    [dispatch],
+  );
+
+  const handleTemplateChange = useCallback(
+    (templateId: string) => {
+      dispatch({ type: "setTemplate", templateId });
+    },
+    [dispatch],
+  );
+
+  const handlePrint = useCallback(() => {
+    window.print();
+  }, []);
 
   return (
     <div className="min-h-screen bg-neutral-100 text-neutral-900 print:bg-white">
@@ -120,7 +141,7 @@ export default function Home() {
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
-              onClick={() => window.print()}
+              onClick={handlePrint}
               className="rounded-full bg-neutral-900 px-6 py-2 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-neutral-700"
             >
               Print / Save PDF
@@ -131,30 +152,34 @@ export default function Home() {
         <div className="flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-xl print:rounded-none print:bg-transparent print:p-0 print:shadow-none">
           <div className="grid gap-4 print:hidden md:grid-cols-[minmax(0,_1fr)_minmax(0,_220px)] md:items-end">
             <label className="flex flex-col gap-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500">
+              <span
+                id={collectionTitleLabelId}
+                className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500"
+              >
                 Collection Title
               </span>
               <input
                 type="text"
                 value={state.title}
-                onChange={(event) =>
-                  dispatch({ type: "setTitle", title: event.target.value })
-                }
+                onChange={(event) => handleTitleChange(event.target.value)}
                 maxLength={60}
                 className="rounded-lg border border-neutral-200 px-4 py-2 text-lg font-semibold uppercase tracking-[0.2em] text-neutral-800 outline-none focus:border-neutral-400"
+                aria-labelledby={collectionTitleLabelId}
               />
             </label>
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500">
+              <label
+                className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500"
+                htmlFor={templateFieldId}
+              >
                 Template
               </label>
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <select
                   value={activeTemplate.id}
-                  onChange={(event) =>
-                    dispatch({ type: "setTemplate", templateId: event.target.value })
-                  }
+                  onChange={(event) => handleTemplateChange(event.target.value)}
                   className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm font-medium uppercase tracking-wide text-neutral-700 outline-none focus:border-neutral-400"
+                  id={templateFieldId}
                 >
                   {templates.map((template) => (
                     <option key={template.id} value={template.id}>
@@ -165,9 +190,7 @@ export default function Home() {
                 {suggestedTemplate.id !== activeTemplate.id ? (
                   <button
                     type="button"
-                    onClick={() =>
-                      dispatch({ type: "setTemplate", templateId: suggestedTemplate.id })
-                    }
+                    onClick={() => handleTemplateChange(suggestedTemplate.id)}
                     className="whitespace-nowrap rounded-full border border-neutral-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-600 transition hover:border-neutral-400 hover:text-neutral-800"
                   >
                     Use {suggestedTemplate.label}
@@ -178,20 +201,19 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center">
-            <div className="relative w-[16in] max-w-full overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl print:w-[16in] print:border-0 print:shadow-none">
-              <div className="flex h-[10in] w-full flex-col gap-[0.35in] px-[0.6in] pt-[0.5in] pb-[0.8in] print:h-[10in]">
+            <div className="relative w-[16in] max-w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl transition print:w-[16in] print:border-0 print:bg-transparent print:shadow-none">
+              <div className="flex h-[10in] w-full flex-col px-[0.75in] pt-[0.75in] pb-[0.65in] print:h-[10in]">
                 <input
                   type="text"
                   value={state.title}
-                  onChange={(event) =>
-                    dispatch({ type: "setTitle", title: event.target.value })
-                  }
+                  onChange={(event) => handleTitleChange(event.target.value)}
                   maxLength={60}
-                  className="mx-auto w-full max-w-[12in] border-b border-dashed border-neutral-300 bg-transparent pb-3 text-center text-3xl font-semibold uppercase tracking-[0.35em] text-neutral-800 outline-none placeholder:text-neutral-300 print:border-none print:pb-2"
+                  className="mx-auto w-full max-w-[12in] bg-transparent text-center text-4xl font-semibold uppercase tracking-[0.32em] text-neutral-800 outline-none placeholder:text-neutral-300 focus-visible:ring-0"
                   placeholder="Collection Title"
+                  aria-labelledby={collectionTitleLabelId}
                 />
-                <div className="relative flex-1">
-                  <div className="h-full w-full pr-[1.6in] pb-[1.4in]">
+                <div className="flex flex-1 flex-col pt-[0.5in]">
+                  <div className="h-full w-full">
                     <TemplateCanvas
                       template={activeTemplate}
                       slots={visibleSlots}
@@ -206,14 +228,16 @@ export default function Home() {
                       }
                     />
                   </div>
-                  <Image
-                    src="/gertmanian-logo.svg"
-                    alt="Gertmanian"
-                    width={220}
-                    height={72}
-                    className="pointer-events-none absolute bottom-0 right-0 w-[1.85in] max-w-[280px]"
-                    priority
-                  />
+                  <div className="flex justify-center pt-[0.45in]">
+                    <Image
+                      src="/gertmanian-logo.svg"
+                      alt="Gertmanian"
+                      width={220}
+                      height={72}
+                      className="pointer-events-none w-[2.3in] max-w-[320px]"
+                      priority
+                    />
+                  </div>
                 </div>
               </div>
             </div>
