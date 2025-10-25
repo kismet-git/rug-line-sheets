@@ -123,13 +123,14 @@ export function ImageSlot({
         {imageUrl ? (
           <button
             type="button"
+            aria-label="Remove image"
             onClick={(event) => {
               event.stopPropagation();
               clearImage();
             }}
-            className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-neutral-700 shadow-sm transition hover:bg-white"
+            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-base font-semibold text-neutral-700 shadow-sm transition hover:bg-white"
           >
-            Remove
+            <span aria-hidden="true">&times;</span>
           </button>
         ) : null}
       </div>
