@@ -26,14 +26,13 @@ export interface TemplateDefinition {
 export const PRINTABLE_WIDTH = 2550;
 export const PRINTABLE_HEIGHT = 3300;
 
-const SIDE_MARGIN = 100;
-const TITLE_AREA_HEIGHT = 220;
+const SIDE_MARGIN = 60;
+const TITLE_AREA_HEIGHT = 280;
 const FOOTER_AREA_HEIGHT = 320;
-const HORIZONTAL_GAP = 36;
-const VERTICAL_GAP = 72;
+const HORIZONTAL_GAP = 24;
+const VERTICAL_GAP = 42;
 const CAPTION_HEIGHT = 90;
-const IMAGE_ASPECT_RATIO = 1.9;
-const FIRST_ROW_OFFSET = 80;
+const IMAGE_ASPECT_RATIO = 1.35;
 
 interface LayoutSpec {
   id: string;
@@ -64,26 +63,31 @@ function createTemplate({ id, name, description, rows }: LayoutSpec): TemplateDe
   const slotHeight = Number((imageHeight + CAPTION_HEIGHT).toFixed(2));
 
   const totalSlotHeight = slotHeight * rows.length + totalVerticalGaps;
-  const maxStartY = PRINTABLE_HEIGHT - FOOTER_AREA_HEIGHT - totalSlotHeight;
-  const startYBase = TITLE_AREA_HEIGHT + FIRST_ROW_OFFSET;
+  const availableSlotAreaHeight = interiorHeight;
   const startY = Number(
-    Math.max(
-      TITLE_AREA_HEIGHT,
-      Math.min(startYBase, maxStartY),
+    (
+      TITLE_AREA_HEIGHT +
+      Math.max((availableSlotAreaHeight - totalSlotHeight) / 2, 0)
     ).toFixed(2),
+  );
+
+  const gridWidth = slotWidth * maxColumns + HORIZONTAL_GAP * Math.max(maxColumns - 1, 0);
+  const gridStartX = Number(
+    ((PRINTABLE_WIDTH - gridWidth) / 2).toFixed(2),
   );
 
   const slots: TemplateSlot[] = [];
   let slotIndex = 0;
 
   rows.forEach((columns, rowIndex) => {
-    const rowWidth = columns * slotWidth + HORIZONTAL_GAP * Math.max(columns - 1, 0);
-    const startX = Number(((PRINTABLE_WIDTH - rowWidth) / 2).toFixed(2));
+    const remainingColumns = maxColumns - columns;
+    const baseStartX =
+      gridStartX + ((slotWidth + HORIZONTAL_GAP) * Math.max(remainingColumns, 0)) / 2;
     const y = Number((startY + rowIndex * (slotHeight + VERTICAL_GAP)).toFixed(2));
 
     for (let columnIndex = 0; columnIndex < columns; columnIndex += 1) {
       const x = Number(
-        (startX + columnIndex * (slotWidth + HORIZONTAL_GAP)).toFixed(2),
+        (baseStartX + columnIndex * (slotWidth + HORIZONTAL_GAP)).toFixed(2),
       );
 
       slotIndex += 1;
