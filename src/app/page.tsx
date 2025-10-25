@@ -231,7 +231,7 @@ export default function Home() {
                   </div>
                   <div className="flex justify-center pt-[0.45in]">
                     <Image
-                      src="/gertmanian-logo.svg"
+                      src="https://u0m9uz4r42yofjsv.public.blob.vercel-storage.com/gertmenian-logo.png"
                       alt="Gertmanian"
                       width={220}
                       height={72}
