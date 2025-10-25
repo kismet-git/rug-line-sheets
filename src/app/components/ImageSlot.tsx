@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 
+import { prepareRugImage } from "../lib/prepareRugImage";
+
 type Props = {
   index: number;
   imageUrl?: string;
@@ -23,10 +25,18 @@ export function ImageSlot({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleFile = (file: File | undefined) => {
+  const handleFile = async (file: File | undefined) => {
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    onImageChange(index, { url, name: file.name });
+
+    try {
+      const { blob, name } = await prepareRugImage(file);
+      const nextUrl = URL.createObjectURL(blob);
+      onImageChange(index, { url: nextUrl, name });
+    } catch (error) {
+      console.error("Unable to process rug image", error);
+      const fallbackUrl = URL.createObjectURL(file);
+      onImageChange(index, { url: fallbackUrl, name: file.name });
+    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +45,8 @@ export function ImageSlot({
     if (imageUrl) {
       URL.revokeObjectURL(imageUrl);
     }
-    handleFile(file);
+    void handleFile(file);
+    event.target.value = "";
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -46,7 +57,7 @@ export function ImageSlot({
     if (imageUrl) {
       URL.revokeObjectURL(imageUrl);
     }
-    handleFile(file);
+    void handleFile(file);
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
