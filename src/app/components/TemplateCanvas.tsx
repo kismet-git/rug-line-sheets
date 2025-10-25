@@ -30,7 +30,7 @@ export function TemplateCanvas({
     .join(" ");
 
   const slotAreas = slotAreaLookup[template.id];
-  const gapSize = template.slotCount >= 6 ? "0.25in" : "0.4in";
+  const gapSize = template.slotCount >= 6 ? "0.18in" : "0.24in";
 
   return (
     <div
@@ -40,6 +40,8 @@ export function TemplateCanvas({
         gridTemplateRows: template.gridTemplateRows,
         gridTemplateAreas,
         gap: gapSize,
+        justifyItems: "center",
+        alignContent: "center",
       }}
     >
       {slots.map((slot, index) => (

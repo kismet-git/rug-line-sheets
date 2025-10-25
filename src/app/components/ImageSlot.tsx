@@ -111,7 +111,7 @@ export function ImageSlot({
             title={name}
             fill
             sizes="100%"
-            className="object-contain object-center"
+            className="object-cover object-center"
             unoptimized
           />
         ) : (
@@ -141,7 +141,7 @@ export function ImageSlot({
           value={caption}
           onChange={(event) => onCaptionChange(index, event.target.value)}
           placeholder="Caption"
-          className="h-10 w-full bg-transparent text-center text-sm font-semibold uppercase tracking-[0.3em] text-neutral-800 outline-none placeholder:text-neutral-400 print:h-auto print:text-[0.95rem] print:tracking-[0.25em]"
+          className="h-10 w-full bg-transparent text-center text-sm font-semibold uppercase tracking-[0.3em] text-black outline-none placeholder:text-neutral-400 print:h-auto print:text-[0.95rem] print:tracking-[0.25em]"
           maxLength={60}
         />
       </label>
