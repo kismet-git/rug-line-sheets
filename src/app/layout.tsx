@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gertmanian Line Sheet Builder",
+  title: "Gertmenian Line Sheet Builder",
   description: "Create printable 11×17 rug line sheets in the browser.",
 };
 

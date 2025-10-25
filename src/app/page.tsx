@@ -133,7 +133,7 @@ export default function Home() {
         <header className="flex flex-col gap-4 print:hidden sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold tracking-wide text-neutral-800">
-              Gertmanian Line Sheet Builder
+              Gertmenian Line Sheet Builder
             </h1>
             <p className="text-sm text-neutral-500">
               Upload rugs, enter captions, pick a layout, then print to PDF.
@@ -232,7 +232,7 @@ export default function Home() {
                   <div className="flex justify-center pt-[0.45in]">
                     <Image
                       src="https://u0m9uz4r42yofjsv.public.blob.vercel-storage.com/gertmenian-logo.png"
-                      alt="Gertmanian"
+                      alt="Gertmenian"
                       width={220}
                       height={72}
                       className="pointer-events-none w-[2.3in] max-w-[320px]"
