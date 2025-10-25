@@ -8,6 +8,7 @@ import { prepareRugImage } from "../lib/prepareRugImage";
 type Props = {
   index: number;
   imageUrl?: string;
+  name?: string;
   caption: string;
   onImageChange: (index: number, file: { url: string; name: string }) => void;
   onClearImage: (index: number) => void;
@@ -17,6 +18,7 @@ type Props = {
 export function ImageSlot({
   index,
   imageUrl,
+  name,
   caption,
   onImageChange,
   onClearImage,
@@ -105,7 +107,8 @@ export function ImageSlot({
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={`Rug ${index + 1}`}
+            alt={name ? name : `Rug ${index + 1}`}
+            title={name}
             fill
             sizes="100%"
             className="object-contain object-center"

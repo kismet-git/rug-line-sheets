@@ -6,6 +6,7 @@ import { slotAreaLookup } from "../templates";
 
 type SlotState = {
   imageUrl?: string;
+  name?: string;
   caption: string;
 };
 
@@ -49,6 +50,7 @@ export function TemplateCanvas({
           <ImageSlot
             index={index}
             imageUrl={slot.imageUrl}
+            name={slot.name}
             caption={slot.caption}
             onImageChange={onImageChange}
             onClearImage={onClearImage}
