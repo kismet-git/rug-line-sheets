@@ -213,7 +213,8 @@ export default function Home() {
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useReducer, useId } from "react";
 import { TemplateCanvas } from "./components/TemplateCanvas";
-import { maxSlots, templates, type TemplateDefinition } from "./templates";
+import { maxSlots, templates } from "./templates";
+import type { TemplateDefinition } from "./templates";
 
 type SlotState = {
   imageUrl?: string;
