@@ -128,7 +128,7 @@ export function ImageSlot({
               event.stopPropagation();
               clearImage();
             }}
-            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-base font-semibold text-neutral-700 shadow-sm transition hover:bg-white"
+            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-base font-semibold text-neutral-700 shadow-sm transition hover:bg-white print:hidden"
           >
             <span aria-hidden="true">&times;</span>
           </button>
