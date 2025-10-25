@@ -38,12 +38,14 @@ export function TemplateCanvas({ template, slots }: TemplateCanvasProps) {
               const top = (slot.y / template.printableHeight) * 100;
               const width = (slot.width / template.printableWidth) * 100;
               const height = (slot.height / template.printableHeight) * 100;
-              const captionPercent = (slot.captionHeight / slot.height) * 100;
+              const captionPercent = slot.height
+                ? (slot.captionHeight / slot.height) * 100
+                : 0;
 
               return (
                 <div
                   key={slot.id}
-                  className="absolute flex flex-col overflow-hidden rounded-md border border-zinc-200 bg-white shadow-sm"
+                  className="absolute flex flex-col overflow-hidden bg-white"
                   style={{
                     left: `${left}%`,
                     top: `${top}%`,
@@ -51,7 +53,7 @@ export function TemplateCanvas({ template, slots }: TemplateCanvasProps) {
                     height: `${height}%`,
                   }}
                 >
-                  <div className="relative flex-1 bg-zinc-100">
+                  <div className="relative flex-1 bg-white">
                     {content.imageUrl ? (
                       <Image
                         alt={content.caption ?? "Uploaded artwork"}
@@ -69,17 +71,12 @@ export function TemplateCanvas({ template, slots }: TemplateCanvasProps) {
                     )}
                   </div>
                   <div
-                    className="flex items-center justify-between gap-2 border-t border-zinc-200 bg-white px-3 text-xs text-zinc-600 [line-height:1.2]"
+                    className="flex items-center justify-center bg-white px-4 text-[0.62rem] font-semibold uppercase tracking-[0.32em] text-black [line-height:1.2]"
                     style={{
                       flex: `0 0 ${captionPercent}%`,
                     }}
                   >
-                    <span className="truncate">
-                      {content.caption ?? `Caption ${index + 1}`}
-                    </span>
-                    <span className="font-mono text-[10px] uppercase text-zinc-400">
-                      {slot.width.toFixed(0)}×{slot.height.toFixed(0)}
-                    </span>
+                    <span className="truncate">{content.caption ?? `Caption ${index + 1}`}</span>
                   </div>
                 </div>
               );

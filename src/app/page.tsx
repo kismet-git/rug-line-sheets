@@ -3,9 +3,13 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useReducer, useId } from "react";
 
-import { TemplateCanvas } from "./components/TemplateCanvas";
-import type { TemplateDefinition } from "./templates";
-import { maxSlots, templates } from "./templates";
+import { TemplateCanvas as BuilderTemplateCanvas } from "./components/TemplateCanvas";
+import {
+  TemplateCanvas as PrintTemplateCanvas,
+  type SlotData as PrintSlotData,
+} from "@/components/TemplateCanvas";
+import type { TemplateDefinition } from "@/templates";
+import { templates } from "@/templates";
 
 type SlotState = {
   imageUrl?: string;
@@ -26,10 +30,15 @@ type Action =
   | { type: "clearImage"; index: number }
   | { type: "setCaption"; index: number; caption: string };
 
+const MAX_SLOT_COUNT = templates.reduce(
+  (max, template) => Math.max(max, template.slotCount),
+  0,
+);
+
 const initialState: BuilderState = {
   title: "Collection Title",
   templateId: templates[0].id,
-  slots: Array.from({ length: maxSlots }, () => ({ caption: "" })),
+  slots: Array.from({ length: MAX_SLOT_COUNT }, () => ({ caption: "" })),
 };
 
 function reducer(state: BuilderState, action: Action): BuilderState {
@@ -109,6 +118,15 @@ export default function Home() {
     [state.slots, activeTemplate.slotCount],
   );
 
+  const printableSlots = useMemo<PrintSlotData[]>(
+    () =>
+      visibleSlots.map((slot) => ({
+        imageUrl: slot.imageUrl,
+        caption: slot.caption ? slot.caption : undefined,
+      })),
+    [visibleSlots],
+  );
+
   const handleTitleChange = useCallback(
     (title: string) => {
       dispatch({ type: "setTitle", title });
@@ -164,7 +182,7 @@ export default function Home() {
                 value={state.title}
                 onChange={(event) => handleTitleChange(event.target.value)}
                 maxLength={60}
-                className="rounded-lg border border-neutral-200 px-4 py-2 text-lg font-semibold uppercase tracking-[0.2em] text-neutral-800 outline-none focus:border-neutral-400"
+                className="rounded-lg border border-neutral-200 px-4 py-2 text-lg font-semibold uppercase tracking-[0.2em] text-[#006991] outline-none focus:border-[#006991]"
                 aria-labelledby={collectionTitleLabelId}
               />
             </label>
@@ -184,7 +202,7 @@ export default function Home() {
                 >
                   {templates.map((template) => (
                     <option key={template.id} value={template.id}>
-                      {template.label}
+                      {template.name}
                     </option>
                   ))}
                 </select>
@@ -194,7 +212,7 @@ export default function Home() {
                     onClick={() => handleTemplateChange(suggestedTemplate.id)}
                     className="whitespace-nowrap rounded-full border border-neutral-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-600 transition hover:border-neutral-400 hover:text-neutral-800"
                   >
-                    Use {suggestedTemplate.label}
+                    Use {suggestedTemplate.name}
                   </button>
                 ) : null}
               </div>
@@ -209,27 +227,38 @@ export default function Home() {
                   value={state.title}
                   onChange={(event) => handleTitleChange(event.target.value)}
                   maxLength={60}
-                  className="mx-auto w-full max-w-[12in] bg-transparent text-center text-4xl font-semibold uppercase tracking-[0.32em] text-neutral-800 outline-none placeholder:text-neutral-300 focus-visible:ring-0"
+                  className="mx-auto w-full max-w-[12in] bg-transparent text-center text-4xl font-semibold uppercase tracking-[0.32em] text-[#006991] outline-none placeholder:text-[#006991]/40 focus-visible:ring-0"
                   placeholder="Collection Title"
                   aria-labelledby={collectionTitleLabelId}
                 />
                 <div className="flex flex-1 flex-col pt-[0.5in]">
                   <div className="h-full w-full">
-                    <TemplateCanvas
-                      template={activeTemplate}
-                      slots={visibleSlots}
-                      onImageChange={(index, file) =>
-                        dispatch({ type: "setImage", index, payload: file })
-                      }
-                      onClearImage={(index) =>
-                        dispatch({ type: "clearImage", index })
-                      }
-                      onCaptionChange={(index, caption) =>
-                        dispatch({ type: "setCaption", index, caption })
-                      }
-                    />
+                    <div className="relative h-full w-full">
+                      <div className="hidden h-full w-full print:block">
+                        <PrintTemplateCanvas
+                          template={activeTemplate}
+                          slots={printableSlots}
+                        />
+                      </div>
+                      <div className="h-full w-full print:hidden">
+                        <BuilderTemplateCanvas
+                          template={activeTemplate}
+                          slots={visibleSlots}
+                          onImageChange={(index, file) =>
+                            dispatch({ type: "setImage", index, payload: file })
+                          }
+                          onClearImage={(index) =>
+                            dispatch({ type: "clearImage", index })
+                          }
+                          onCaptionChange={(index, caption) =>
+                            dispatch({ type: "setCaption", index, caption })
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-center pt-[0.45in]">
+                  <div className="flex flex-col items-center gap-[0.2in] pt-[0.45in]">
+                    <div className="h-[2px] w-[6in] max-w-full bg-[#006991]" />
                     <Image
                       src="https://u0m9uz4r42yofjsv.public.blob.vercel-storage.com/gertmenian-logo.png"
                       alt="Gertmenian"

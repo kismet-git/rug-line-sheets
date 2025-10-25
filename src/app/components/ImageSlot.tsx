@@ -10,6 +10,7 @@ type Props = {
   imageUrl?: string;
   name?: string;
   caption: string;
+  captionHeightPercent?: number;
   onImageChange: (index: number, file: { url: string; name: string }) => void;
   onClearImage: (index: number) => void;
   onCaptionChange: (index: number, caption: string) => void;
@@ -20,6 +21,7 @@ export function ImageSlot({
   imageUrl,
   name,
   caption,
+  captionHeightPercent,
   onImageChange,
   onClearImage,
   onCaptionChange,
@@ -87,8 +89,11 @@ export function ImageSlot({
     onClearImage(index);
   };
 
+  const captionPercent = Math.min(Math.max(captionHeightPercent ?? 0, 0), 100);
+  const imagePercent = Math.max(0, 100 - captionPercent);
+
   const dropZoneClasses = [
-    "relative flex flex-1 cursor-pointer flex-col items-center justify-center transition-colors",
+    "relative flex h-full w-full cursor-pointer flex-col items-center justify-center transition-colors",
     imageUrl ? "bg-transparent" : "bg-neutral-50",
     isDragging
       ? "border-2 border-dashed border-blue-400"
@@ -103,6 +108,12 @@ export function ImageSlot({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        style={{
+          flex:
+            captionHeightPercent !== undefined
+              ? `0 0 ${imagePercent}%`
+              : "1 1 auto",
+        }}
       >
         {imageUrl ? (
           <Image
@@ -111,7 +122,7 @@ export function ImageSlot({
             title={name}
             fill
             sizes="100%"
-            className="object-contain object-center"
+            className="object-cover object-center"
             unoptimized
           />
         ) : (
@@ -134,14 +145,22 @@ export function ImageSlot({
           </button>
         ) : null}
       </div>
-      <label className="flex items-center border-t border-neutral-200 bg-white px-3 print:border-0 print:bg-transparent">
+      <label
+        className="flex items-center border-t border-neutral-200 bg-white px-3 print:border-0 print:bg-transparent"
+        style={{
+          flex:
+            captionHeightPercent !== undefined
+              ? `0 0 ${captionPercent}%`
+              : "0 0 auto",
+        }}
+      >
         <span className="sr-only">Caption for rug {index + 1}</span>
         <input
           type="text"
           value={caption}
           onChange={(event) => onCaptionChange(index, event.target.value)}
           placeholder="Caption"
-          className="h-10 w-full bg-transparent text-center text-sm font-semibold uppercase tracking-[0.3em] text-neutral-800 outline-none placeholder:text-neutral-400 print:h-auto print:text-[0.95rem] print:tracking-[0.25em]"
+          className="h-10 w-full bg-transparent text-center text-sm font-semibold uppercase tracking-[0.3em] text-black outline-none placeholder:text-neutral-400 print:h-auto print:min-h-0 print:text-[0.95rem] print:tracking-[0.25em]"
           maxLength={60}
         />
       </label>
