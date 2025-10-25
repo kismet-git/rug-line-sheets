@@ -26,12 +26,12 @@ export interface TemplateDefinition {
 export const PRINTABLE_WIDTH = 2550;
 export const PRINTABLE_HEIGHT = 3300;
 
-const SIDE_MARGIN = 210;
-const TITLE_AREA_HEIGHT = 360;
-const FOOTER_AREA_HEIGHT = 420;
-const HORIZONTAL_GAP = 70;
-const VERTICAL_GAP = 90;
-const CAPTION_HEIGHT = 140;
+const SIDE_MARGIN = 100;
+const TITLE_AREA_HEIGHT = 260;
+const FOOTER_AREA_HEIGHT = 260;
+const HORIZONTAL_GAP = 50;
+const VERTICAL_GAP = 70;
+const CAPTION_HEIGHT = 120;
 const IMAGE_ASPECT_RATIO = 1.05;
 
 interface LayoutSpec {

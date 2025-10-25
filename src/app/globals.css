@@ -34,7 +34,7 @@ body {
 
 @page {
   size: 17in 11in;
-  margin: 0.5in;
+  margin: 0.2in;
 }
 
 @media print {
